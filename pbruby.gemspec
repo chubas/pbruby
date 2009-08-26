@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "lib/pbruby.rb",
      "lib/pbruby/client.rb",
      "lib/pbruby/pb_methods.rb",
+     "pbruby.gemspec",
      "setup.rb"
   ]
   s.has_rdoc = true
