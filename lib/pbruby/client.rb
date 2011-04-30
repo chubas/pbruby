@@ -17,12 +17,13 @@ module PBWiki
 
     # Gets the method corresponding to the PBWorks v2 API, with the requested parameters.
     def self.perform_api_request(verb, base_uri, format, secure, api_method, params = {})
-      response = send(verb,
-                        "/api_v2/",
-                        :base_uri   => base_uri,
-                        :query => {
-                          :op       => api_method,
-                          :_type    => 'jsontext'}.merge(params))
+      request_options = { :base_uri   => base_uri,
+                          :query => {
+                            :op       => api_method,
+                            :_type    => 'jsontext'}.merge(params)
+                        }
+      request_options[:body] = request_options.delete(:query) if verb == :post
+      response = send(verb, "/api_v2/", request_options)
       response = response.gsub(/^\/\*-secure-/, '').gsub(/\*\/$/, '').strip if secure
       format == :json ? Mash.new(Crack::JSON.parse(response)) : response
     rescue Crack::ParseError
